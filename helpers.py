@@ -22,6 +22,12 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
 
+class EmptyFileError(Exception):
+    pass
+
+class FileReadError(Exception):
+    pass    
+
 def pdfReader(file):
     try:
         pdf_reader = PdfReader(io.BytesIO(file.read()))
@@ -34,6 +40,25 @@ def pdfReader(file):
     except Exception as e:
         return f"Error reading PDF: {str(e)}", 500
     
+def read_file(file, filename):
+    try:
+        if filename.endswith('.txt'):
+            content = file.read().decode('utf-8')
+        elif filename.endswith('.pdf'):
+            content = pdfReader(file)
+        else:
+            raise ValueError("Unsupported file format. Please upload a .txt or .pdf file.")
+        
+        if not content or not content.strip():
+            raise EmptyFileError("The uploaded file is empty.")
+        
+        return content
+    
+    except EmptyFileError:
+        raise
+
+    except Exception as e:
+        raise FileReadError(f"Error reading file: {filename}") from e
 
 def lemmatize_text(full_text):
     # 1. Convert to lowercase
