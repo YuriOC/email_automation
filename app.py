@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, render_template
 from helpers import EmptyFileError, FileReadError, email_classification_AI, read_file
 
@@ -33,3 +34,7 @@ def index():
 @app.route("/result", methods=["GET"])
 def return_page():
     return render_template("result.html")
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    app.run(host="0.0.0.0", port=port)
