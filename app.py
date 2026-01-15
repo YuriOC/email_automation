@@ -17,12 +17,17 @@ def index():
 
             content = file.read().decode('utf-8')
             finalContent = email_classification_AI(content)
-            return finalContent, 200
-        
+
         elif filename.endswith('.pdf'):
 
             content = pdfReader(file)
             finalContent = email_classification_AI(content)
-            return finalContent, 200
-        
-        return "Unsupported file format", 4004
+
+        else:
+            raise ValueError("Unsupported file format. Please upload a .txt or .pdf file.")
+
+        return render_template("result.html", contentJSON=finalContent)
+    
+@app.route("/result", methods=["GET"])
+def return_page():
+    return render_template("result.html")
