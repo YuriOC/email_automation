@@ -10,7 +10,7 @@ def index():
     
     if request.method == "POST":
 
-        file = request.files["email"]
+        file = request.files["email_file"]
         filename = file.filename
 
         if filename.endswith('.txt'):

@@ -1,16 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Result</title>
+  <meta charset="UTF-8" />
+  <title>Resultado da Classificação</title>
+  <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
-    <div>
-        <h1>{{ contentJSON.classificacao }}</h1>
+
+  <div class="container">
+
+    <h1>Resultado da Análise</h1>
+
+    <div class="result-card">
+      <div class="badge {{ contentJSON.classificacao|lower }}">
+        {{ contentJSON.classificacao }}
+      </div>
+
+      <h2>Resposta Sugerida</h2>
+
+      <div class="resposta">
+        {{ contentJSON.resposta_sugerida }}
+      </div>
+
+      <a href="/" class="btn-secondary">
+        Analisar outro email
+      </a>
     </div>
-    <div>
-        <h1>{{ contentJSON.resposta_sugerida }}</h1>
-    </div>
+
+  </div>
+
 </body>
 </html>
+
+<!-- <div>
+    <h1 style="white-space: pre-line;">{{ contentJSON.classificacao }}</h1>
+</div>
+<div>
+    <h1 style="white-space: pre-line;">{{ contentJSON.resposta_sugerida }}</h1>
+</div> -->

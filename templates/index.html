@@ -1,17 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Automation</title>
+    <meta charset="UTF-8" />
+    <title>Classificador de Emails</title>
+    <link rel="stylesheet" href="/static/styles.css" />
 </head>
+
 <body>
-    <div>
-        <form action="/" method="POST" enctype="multipart/form-data">
-            <label for="emailFile">Upload your email here (.txt or .pdf):</label>
-            <input type="file" name="email" accept=".txt, .pdf" required>
-            <input type="submit">
+
+    <div class="container">
+        <h1>Classificador de Emails</h1>
+        <p class="subtitle">
+            Envie um email em <strong>TXT</strong> ou <strong>PDF</strong>
+            para classificação automática e resposta sugerida.
+        </p>
+
+        <form class="upload-card" action="/" method="POST" enctype="multipart/form-data">
+
+            <label for="email_file" class="file-label">
+                <span>Selecionar arquivo</span>
+            </label>
+
+            <input type="file" id="email_file" name="email_file" accept=".txt,.pdf" required hidden />
+
+            <p id="file-name" class="file-name">
+                Nenhum arquivo selecionado
+            </p>
+
+            <button type="submit" class="btn-primary">
+                Processar Email
+            </button>
         </form>
+
+        <footer>
+            <p>© 2026 · Classificação Inteligente de Emails</p>
+        </footer>
     </div>
+
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-card">
+            <div class="spinner"></div>
+            <p>Processando o email...</p>
+            <span>Isso pode levar alguns segundos</span>
+        </div>
+    </div>
+
+    <script>
+        const inputFile = document.getElementById("email_file");
+        const fileName = document.getElementById("file-name");
+
+        inputFile.addEventListener("change", () => {
+            fileName.textContent = inputFile.files.length
+                ? inputFile.files[0].name
+                : "Nenhum arquivo selecionado";
+        });
+
+        const form = document.querySelector("form");
+        const loadingOverlay = document.getElementById("loading-overlay");
+
+        form.addEventListener("submit", () => {
+            loadingOverlay.classList.remove("hidden");
+        });
+    </script>
+
 </body>
+
 </html>
+
+
+<!-- <div>
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <label for="emailFile">Upload your email here (.txt or .pdf):</label>
+        <input type="file" name="email" accept=".txt, .pdf" required>
+        <input type="submit">
+    </form>
+</div> -->
