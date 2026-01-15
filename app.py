@@ -6,6 +6,7 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
+        
         return render_template("index.html")
     
     if request.method == "POST":
@@ -15,7 +16,7 @@ def index():
 
         try:
             full_text = read_file(file, filename)
-            finalContent = email_classification_AI(full_text)
+            final_content = email_classification_AI(full_text)
         except EmptyFileError as e:
             return {
                 "error": "EmptyFileError",
@@ -26,8 +27,9 @@ def index():
                 "error": "FileReadError",
                 "message": str(e)
             }
-        return render_template("result.html", contentJSON=finalContent)
-    
+        
+        return render_template("result.html", contentJSON=final_content)
+
 @app.route("/result", methods=["GET"])
 def return_page():
     return render_template("result.html")
