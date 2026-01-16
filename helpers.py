@@ -1,20 +1,11 @@
 import os
 import io
-import nltk
 import spacy
 
 from pypdf import PdfReader
 from flask import json
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.stem import RSLPStemmer
 from dotenv import load_dotenv
 from openai import OpenAI
-
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('rslp')
-nltk.download('punkt_tab')
 
 lemmatize_load = spacy.load("pt_core_news_sm")
 
@@ -60,22 +51,20 @@ def read_file(file, filename):
     except Exception as e:
         raise FileReadError(f"Error reading file: {filename}") from e
 
-def lemmatize_text(full_text):
-    # 1. Convert to lowercase
-    text = full_text.lower()
+def lemmatize_text(full_text: str) -> list[str]:
     
-    # 2. Tokenization (Transform string into a list of words)
-    words = word_tokenize(text)
-    
-    # 3. Remove Stop Words and Punctuation
-    stops = set(stopwords.words('portuguese'))
-    clean_words = [word for word in words if word.isalnum() and word not in stops]
+    doc = lemmatize_load(full_text.lower())
 
-    # 4. Lemmatization (Using spaCy)
-    doc = lemmatize_load(" ".join(clean_words))
-    text_lemmatized = [token.lemma_ for token in doc]
+    lemmas = [
+        token.lemma_
+        for token in doc
+        if not token.is_stop
+        and not token.is_punct
+        and not token.is_space
+        and token.is_alpha
+    ]
 
-    return text_lemmatized
+    return lemmas
 
 
 def email_classification_AI(full_text: str):
